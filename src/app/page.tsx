@@ -8,6 +8,7 @@ export default function Home() {
   return (
     <main className="flex min-h-svh items-center justify-center px-4">
       <div className="mx-auto max-w-3xl text-center">
+        {/* Images */}
         <div className="mb-8 flex items-center justify-center gap-4">
           <Image
             src={codingInFlowLogo}
@@ -25,9 +26,13 @@ export default function Home() {
             className="border-muted rounded-full border"
           />
         </div>
+
+        {/* Title */}
         <h1 className="text-3xl font-semibold sm:text-4xl">
           Better-Auth Tutorial
         </h1>
+
+        {/* Content */}
         <p className="text-muted-foreground mt-3 text-base text-balance sm:text-lg">
           Learn how to handle authentication in Next.js using Better-Auth with
           this tutorial by{" "}
@@ -40,8 +45,10 @@ export default function Home() {
             Coding in Flow
           </Link>
         </p>
+
+        {/* Buttons - asChild makes converts a link to a button */}
         <div className="mx-auto mt-6 flex max-w-sm flex-col gap-3 sm:flex-row sm:justify-center">
-          <Button asChild>
+          <Button>
             <Link href="/dashboard">Go to Dashboard</Link>
           </Button>
           <Button asChild variant="outline">
