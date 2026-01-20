@@ -4,9 +4,6 @@ const nextConfig: NextConfig = {
   experimental: {
     authInterrupts: true, // These enable, unauthorized & forbidden pages when unauthorized() or forbidden() is called
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   // In case, if you encounter the error
   images: {
     remotePatterns: [
