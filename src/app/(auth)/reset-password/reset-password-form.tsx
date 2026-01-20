@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { authClient } from "@/lib/auth-client";
 import { passwordSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -40,7 +41,18 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   });
 
   async function onSubmit({ newPassword }: ResetPasswordValues) {
-    // TODO: Handle password reset request
+    setSuccess(null);
+    setError(null);
+
+    const { error } = await authClient.resetPassword({ newPassword, token });
+
+    if (error) {
+      setError(error.message || "Something went wrong");
+    } else {
+      setSuccess("Password has been reset. You can now sign in.");
+      setTimeout(() => router.push("/sign-in"), 3000);
+      form.reset();
+    }
   }
 
   const loading = form.formState.isSubmitting;

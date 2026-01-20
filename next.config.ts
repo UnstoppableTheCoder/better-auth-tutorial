@@ -2,10 +2,23 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
-    authInterrupts: true,
+    authInterrupts: true, // These enable, unauthorized & forbidden pages when unauthorized() or forbidden() is called
   },
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  // In case, if you encounter the error
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
+    ],
   },
 };
 

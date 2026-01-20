@@ -19,12 +19,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
 import { passwordSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const signUpSchema = z
@@ -59,7 +61,23 @@ export function SignUpForm() {
   });
 
   async function onSubmit({ email, password, name }: SignUpValues) {
-    // TODO: Handle sign up
+    setError(null);
+
+    const { error } = await authClient.signUp.email({
+      email,
+      password,
+      name,
+      callbackURL: "/email-verified", // user will be redirected to the verify user page after signup -> This only runs when email gets verified
+    });
+
+    console.log(error);
+
+    if (error) {
+      setError(error.message || "Something went wrong");
+    } else {
+      toast.success("Signed up successfully");
+      router.push("/dashboard");
+    }
   }
 
   const loading = form.formState.isSubmitting;
@@ -72,9 +90,11 @@ export function SignUpForm() {
           Enter your information to create an account
         </CardDescription>
       </CardHeader>
+
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* Name */}
             <FormField
               control={form.control}
               name="name"
@@ -89,6 +109,7 @@ export function SignUpForm() {
               )}
             />
 
+            {/* Email */}
             <FormField
               control={form.control}
               name="email"
@@ -107,6 +128,7 @@ export function SignUpForm() {
               )}
             />
 
+            {/* Password */}
             <FormField
               control={form.control}
               name="password"
@@ -125,6 +147,7 @@ export function SignUpForm() {
               )}
             />
 
+            {/* Confirm Password */}
             <FormField
               control={form.control}
               name="passwordConfirmation"
@@ -155,6 +178,7 @@ export function SignUpForm() {
           </form>
         </Form>
       </CardContent>
+
       <CardFooter>
         <div className="flex w-full justify-center border-t pt-4">
           <p className="text-muted-foreground text-center text-xs">

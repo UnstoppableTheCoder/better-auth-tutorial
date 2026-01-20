@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -32,7 +33,23 @@ export function ForgotPasswordForm() {
   });
 
   async function onSubmit({ email }: ForgotPasswordValues) {
-    // TODO: Handle password reset
+    setSuccess(null);
+    setError(null);
+
+    //Maybe: uses sendResetPassword email
+    const { error } = await authClient.requestPasswordReset({
+      email,
+      redirectTo: "/reset-password",
+    });
+
+    if (error) {
+      setError(error.message || "Something went wrong");
+    } else {
+      setSuccess(
+        "If account exists for this email, we've sent password reset link.",
+      );
+      form.reset();
+    }
   }
 
   const loading = form.formState.isSubmitting;

@@ -13,8 +13,9 @@ export default async function ResetPasswordPage({
   searchParams,
 }: ResetPasswordPageProps) {
   const { token } = await searchParams;
+  //localhost:3000/api/auth/reset-password/ErXQrQSJzDqH7C61BV5NqzKE?callbackURL=%2Freset-password
 
-  return (
+  http: return (
     <main className="flex min-h-svh items-center justify-center px-4">
       {token ? (
         <ResetPasswordUI token={token} />

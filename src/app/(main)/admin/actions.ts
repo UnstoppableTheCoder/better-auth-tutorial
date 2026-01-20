@@ -1,11 +1,15 @@
 "use server";
 
+import { getServerSession } from "@/lib/get-session";
+import { forbidden, unauthorized } from "next/navigation";
 import { setTimeout } from "node:timers/promises";
 
 export async function deleteApplication() {
-  // TODO: Handle authentication + authorization
+  const session = await getServerSession();
+  const user = session?.user;
 
-  // Delete app...
+  if (!user) unauthorized(); // it doesn't redirect rather returns 401 code because you are on server actions page
+  if (user.role !== "admin") forbidden(); // returns 403 code, doesn't redirect
 
   await setTimeout(800);
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { LoadingButton } from "@/components/loading-button";
+import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 
 interface ResendVerificationButtonProps {
@@ -15,7 +16,22 @@ export function ResendVerificationButton({
   const [error, setError] = useState<string | null>(null);
 
   async function resendVerificationEmail() {
-    // TODO: Resend verification email
+    setSuccess(null);
+    setError(null);
+
+    // It will use sendVerificationEmail function from auth.ts & send the email
+    const { error } = await authClient.sendVerificationEmail({
+      email,
+      callbackURL: "/email-verified", // once you click on the verify email link - you'll be redirected here - everything is handled by better-auth side
+    });
+
+    setIsLoading(false);
+
+    if (error) {
+      setError(error.message || "Something went wrong");
+    } else {
+      setSuccess("Verification email sent successfully");
+    }
   }
 
   return (
